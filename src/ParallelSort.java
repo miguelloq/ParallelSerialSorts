@@ -35,9 +35,8 @@ public class ParallelSort {
         }
     }
 
-    public static void counting(int[] array, int numThreads){
+    public static void counting(int[] array, int numThreads) {
         int max = Arrays.stream(array).max().getAsInt();
-        int n = array.length;
 
         int[] count = new int[max + 1];
 
@@ -46,6 +45,10 @@ public class ParallelSort {
         }
 
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+        for (int i = 1; i < count.length; i++) {
+            count[i] += count[i - 1];
+        }
 
         for (int i = 0; i < numThreads; i++) {
             final int start = i * (max + 1) / numThreads;
@@ -65,10 +68,10 @@ public class ParallelSort {
     private static void updateArray(int[] array, int[] count, int start, int end) {
         for (int i = start; i < end; i++) {
             int value = i;
-            int frequency = count[i];
+            int frequency = (i == 0) ? count[i] : count[i] - count[i - 1];
 
             for (int j = 0; j < frequency; j++) {
-                array[start + j] = value;
+                array[count[value] - frequency + j] = value;
             }
         }
     }
