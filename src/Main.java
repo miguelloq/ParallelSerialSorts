@@ -41,9 +41,10 @@ public class Main{
             int[] array = createNewRandomArray(size);
             int[] dataForThisSize = new int[setupThreads.length];
             for(int i=0;i<setupThreads.length;i++) {
+                int[] arrayCopy = array.clone();
                 int numThreads = setupThreads[i];
                 long tempoInicial = System.currentTimeMillis();
-                inputSort.run(array,numThreads);
+                inputSort.run(arrayCopy,numThreads);
                 long tempoFinal = System.currentTimeMillis();
                 dataForThisSize[i]= (int) (tempoFinal-tempoInicial);
             }
